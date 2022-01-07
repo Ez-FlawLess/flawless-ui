@@ -27,6 +27,49 @@ import axios from 'axios'
 const instance = axios.create({
   baseURL: 'https://some-domain.com/api/',
 )}
+
+export default instance
+```
+
+FlawLess UI includes ```<FlawLessUI />``` component, which handles loading state and provides it to the rest of the app.
+
+```javascript
+import { FlawLessUI } from 'flawless-ui'
+import instance from './api'
+
+ReactDOM.render(
+  <FlawLessUI axiosInstance={instance}>
+    <App />
+  </FlawLessUI>,
+  document.getElementById('root')
+);
+```
+
+You can use ```<LoadingController />``` inside your app now to track loading state.
+
+```javascript
+import { LoadingController } from 'flawless-ui'
+
+import instance from 'api'
+
+const URL = '/api-path'
+
+const ExampleComponent = () => {
+
+  useEffect(() => {
+    instance.get(URL)
+  }, [])
+
+  return (
+    <LoadingController url={URL}>
+      {loading => (
+          <h1>
+            {loading ? 'isLoading' : 'notLoading'}
+          </h1>
+      )}
+    </LoadingController>
+  )
+}
 ```
 
 ## Contributing
