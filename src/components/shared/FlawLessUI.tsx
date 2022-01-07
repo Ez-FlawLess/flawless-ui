@@ -14,9 +14,11 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 }) => {
 
     const [loadingState, setLoadingState] = useState<any>({})
+    const [effectCalled, setEffectCalled] = useState<boolean>(false)
 
     useEffect(() => {
         console.log('running good', axiosInstance)
+        if (!effectCalled) setEffectCalled(true)
         const requestInterceptor =  axiosInstance.interceptors.request.use(
             config =>  {
                 console.log('c', config)
@@ -72,7 +74,11 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
     return (
         <loadingContext.Provider value={loadingState}>
-            {children}
+            {effectCalled && (
+                <>
+                    {children}
+                </>
+            )}
         </loadingContext.Provider>
     )
 }
