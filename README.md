@@ -4,7 +4,7 @@ FlawLess UI is a react Library build to make developing a perfect UI easy
 
 ## Installation
 
-Install the package from [npm](https://www.npmjs.com/).
+Install the package from [npm](https://www.npmjs.com/package/flawless-ui).
 
 ```bash
 npm i flawless-ui
@@ -71,6 +71,17 @@ const ExampleComponent = () => {
   )
 }
 ```
+
+
+## Components
+
+- [```<FlawLessUI />```][1]
+
+[1]: https://www.npmjs.com/package/flawless-ui#FlawLessUI
+
+
+### ```<FlawLessUI />```
+
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
