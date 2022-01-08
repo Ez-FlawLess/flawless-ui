@@ -1,27 +1,37 @@
 import React, { createContext, FC, useEffect, useState } from "react";
-import { AxiosInstance } from 'axios'
+import { 
+    AxiosInstance, 
+    AxiosRequestConfig,
+    AxiosResponse
+} from 'axios'
 
 
 export const loadingContext = createContext<any>({})
 
 export interface IFlawLessUIProps {
     axiosInstance: AxiosInstance,
+    onConfig?: (config: AxiosRequestConfig<any>) => any,
+    onRequestError?: (error: any) => any,
+    onResponseError?: (error: any) => any,
+    onResponse?: (response: AxiosResponse<any, any>) => any,
 }
 
 export const FlawLessUI: FC<IFlawLessUIProps> = ({
     children,
     axiosInstance,
+    onConfig,
+    onRequestError,
+    onResponseError,
+    onResponse,
 }) => {
 
     const [loadingState, setLoadingState] = useState<any>({})
     const [effectCalled, setEffectCalled] = useState<boolean>(false)
 
     useEffect(() => {
-        console.log('running good', axiosInstance)
         if (!effectCalled) setEffectCalled(true)
         const requestInterceptor =  axiosInstance.interceptors.request.use(
             config =>  {
-                console.log('c', config)
 
                 const url: string = config.url as string
 
@@ -29,18 +39,19 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
                     ...prev,
                     [url.substring(0, url.indexOf('?'))]: true,
                 }))
+
+                if (onConfig) onConfig(config)
                 
                 return config
             },
             error => {
-                console.log('e', error)
+                if (onRequestError) onRequestError(error)
                 throw error
             }
         )
 
         const responseInterceptor = axiosInstance.interceptors.response.use(
             response => {
-                console.log('r', response)
 
                 const url: string = response.config.url as string
 
@@ -49,10 +60,11 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
                     [url.substring(0, url.indexOf('?'))]: false,
                 }))
 
+                if (onResponse) onResponse(response)
+
                 return response
             },
             error => {
-                console.log('e', error)
 
                 const url: string = error.config.url as string
 
@@ -60,6 +72,8 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
                     ...prev,
                     [url.substring(0, url.indexOf('?'))]: false,
                 }))
+
+                if (onResponseError) onResponseError(error)
 
                 throw error
             }
