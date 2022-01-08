@@ -82,7 +82,7 @@ const ExampleComponent = () => {
 [2]: https://github.com/Ez-FlawLess/flawless-ui#LoadingController
 
 
-## ```<FlawLessUI />```
+### ```<FlawLessUI />```
 
 props:
 - axiosInstance: an object of type AxiosInstance.
@@ -91,7 +91,7 @@ props:
 - onResponseError (optional): an event called when an HTTP response throws an error with the error parameter of type any.
 - onResponse (optional): an event called when an HTTP response has a success status code with the response parameter of type AxiosResponse.
 
-## ```<LoadingController />```
+### ```<LoadingController />```
 
 props:
 - children: a function with the loading boolean as parameter that should return JSX code.
