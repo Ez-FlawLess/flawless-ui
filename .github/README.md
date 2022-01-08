@@ -78,8 +78,8 @@ const ExampleComponent = () => {
 - [```<FlawLessUI />```][1]
 - [```<LoadingController />```][2]
 
-[1]: https://github.com/Ez-FlawLess/flawless-ui#FlawLessUI
-[2]: https://github.com/Ez-FlawLess/flawless-ui#LoadingController
+[1]: https://github.com/Ez-FlawLess/flawless-ui#flawlessui-
+[2]: https://github.com/Ez-FlawLess/flawless-ui#loadingcontroller-
 
 
 ### ```<FlawLessUI />```

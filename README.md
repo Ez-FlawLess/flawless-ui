@@ -78,11 +78,11 @@ const ExampleComponent = () => {
 - [```<FlawLessUI />```][1]
 - [```<LoadingController />```][2]
 
-[1]: https://www.npmjs.com/package/flawless-ui#FlawLessUI
-[2]: https://www.npmjs.com/package/flawless-ui#LoadingController
+[1]: https://www.npmjs.com/package/flawless-ui#flawlessui-
+[2]: https://www.npmjs.com/package/flawless-ui#loadingcontroller-
 
 
-## ```<FlawLessUI />```
+### ```<FlawLessUI />```
 
 props:
 - axiosInstance: an object of type AxiosInstance.
@@ -91,7 +91,7 @@ props:
 - onResponseError (optional): an event called when an HTTP response throws an error with the error parameter of type any.
 - onResponse (optional): an event called when an HTTP response has a success status code with the response parameter of type AxiosResponse.
 
-## ```<LoadingController />```
+### ```<LoadingController />```
 
 props:
 - children: a function with the loading boolean as parameter that should return JSX code.
