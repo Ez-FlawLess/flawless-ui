@@ -10,7 +10,7 @@ Install the package from [npm](https://www.npmjs.com/package/flawless-ui).
 npm i flawless-ui
 ```
 
-FlawLess UI uses [axios](https://www.npmjs.com/package/axios) for listening to http requests
+FlawLess UI uses <a href="https://www.npmjs.com/package/axios" target="_blank">axios</a>
 
 ```bash
 npm i axios
@@ -18,7 +18,7 @@ npm i axios
 
 ## Usage
 
-First create an axios instance. ([axios docs for creating an instance](https://www.npmjs.com/package/axios#creating-an-instance))
+First create an axios instance. <a href="https://www.npmjs.com/package/axios#creating-an-instance" target="_blank">axios docs for creating an instance</a>
 
 ```javascript
 
@@ -76,12 +76,26 @@ const ExampleComponent = () => {
 ## Components
 
 - [```<FlawLessUI />```][1]
+- [```<LoadingController />```][2]
 
 [1]: https://www.npmjs.com/package/flawless-ui#FlawLessUI
+[2]: https://www.npmjs.com/package/flawless-ui#LoadingController
 
 
 ### ```<FlawLessUI />```
 
+props:
+- axiosInstance: an object of type AxiosInstance.
+- onConfig (optional): an event called when an HTTP request is being made with the config parameter of type AxiosRequestConfig.
+- onRequestError (optional): an event called when an HTTP request throws an error with the error parameter of type any.
+- onResponseError (optional): an event called when an HTTP response throws an error with the error parameter of type any.
+- onResponse (optional): an event called when an HTTP response has a success status code with the response parameter of type AxiosResponse.
+
+### ```<LoadingController />```
+
+props:
+- children: a function with the loading boolean as parameter that should return JSX code.
+- url: a string that has been passed to the axios instance as path for HTTP request.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
