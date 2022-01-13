@@ -35,10 +35,19 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
                 const url: string = config.url as string
 
-                setLoadingState((prev: any) => ({
-                    ...prev,
-                    [url.substring(0, url.indexOf('?'))]: true,
-                }))
+                const index = url.indexOf('?')
+
+                if (index !== -1) {
+                    setLoadingState((prev: any) => ({
+                        ...prev,
+                        [url.substring(0, url.indexOf('?'))]: true,
+                    }))
+                } else {
+                    setLoadingState((prev: any) => ({
+                        ...prev,
+                        [url]: true,
+                    }))
+                }
 
                 if (onConfig) onConfig(config)
                 
@@ -55,10 +64,19 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
                 const url: string = response.config.url as string
 
-                setLoadingState((prev: any) => ({
-                    ...prev,
-                    [url.substring(0, url.indexOf('?'))]: false,
-                }))
+                const index = url.indexOf('?')
+
+                if (index !== -1) {
+                    setLoadingState((prev: any) => ({
+                        ...prev,
+                        [url.substring(0, url.indexOf('?'))]: false,
+                    }))
+                } else {
+                    setLoadingState((prev: any) => ({
+                        ...prev,
+                        [url]: false,
+                    }))
+                }
 
                 if (onResponse) onResponse(response)
 
@@ -68,10 +86,19 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
                 const url: string = error.config.url as string
 
-                setLoadingState((prev: any) => ({
-                    ...prev,
-                    [url.substring(0, url.indexOf('?'))]: false,
-                }))
+                const index = url.indexOf('?')
+
+                if (index !== -1) {
+                    setLoadingState((prev: any) => ({
+                        ...prev,
+                        [url.substring(0, url.indexOf('?'))]: false,
+                    }))
+                } else {
+                    setLoadingState((prev: any) => ({
+                        ...prev,
+                        [url]: false,
+                    }))
+                }
 
                 if (onResponseError) onResponseError(error)
 
