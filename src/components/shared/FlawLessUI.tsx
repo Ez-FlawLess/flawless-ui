@@ -34,20 +34,19 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
             config =>  {
 
                 const url: string = config.url as string
-
                 const index = url.indexOf('?')
 
-                if (index !== -1) {
-                    setLoadingState((prev: any) => ({
-                        ...prev,
-                        [url.substring(0, url.indexOf('?'))]: true,
-                    }))
-                } else {
-                    setLoadingState((prev: any) => ({
-                        ...prev,
-                        [url]: true,
-                    }))
-                }
+                setLoadingState(
+                    (prev: any) => index !== -1 
+                        ? ({
+                            ...prev,
+                            [url.substring(0, url.indexOf('?'))]: true,
+                        })
+                        : ({
+                            ...prev,
+                            [url]: true,
+                        })
+                )
 
                 if (onConfig) onConfig(config)
                 
@@ -63,20 +62,19 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
             response => {
 
                 const url: string = response.config.url as string
-
                 const index = url.indexOf('?')
 
-                if (index !== -1) {
-                    setLoadingState((prev: any) => ({
-                        ...prev,
-                        [url.substring(0, url.indexOf('?'))]: false,
-                    }))
-                } else {
-                    setLoadingState((prev: any) => ({
-                        ...prev,
-                        [url]: false,
-                    }))
-                }
+                setLoadingState(
+                    (prev: any) => index !== -1
+                        ? ({
+                            ...prev,
+                            [url.substring(0, url.indexOf('?'))]: false,
+                        })
+                        : ({
+                            ...prev,
+                            [url]: false,
+                        })
+                )
 
                 if (onResponse) onResponse(response)
 
