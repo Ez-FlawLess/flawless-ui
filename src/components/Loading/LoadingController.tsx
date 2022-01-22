@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useContext, useEffect, useState } from "react";
 
-import { loadingContext } from "..";
+import { networkContext } from "../..";
 
 export interface ILoadingControllerProps {
     children: (loading: boolean) => Element | Element[] | ReactNode | ReactNode[],
@@ -12,17 +12,17 @@ export const LoadingController: FC<ILoadingControllerProps> = ({
     url,
 }) => {
 
-    const loadingState = useContext(loadingContext)
+    const networkState = useContext(networkContext)
 
     const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
-        if(loadingState[url]) {
+        if(networkState[url] === true) {
             setLoading(true)
         } else {
             setLoading(false)
         }
-    }, [loadingState, url])
+    }, [networkState, url])
 
     return (
         <>

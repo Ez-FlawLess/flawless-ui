@@ -1,12 +1,26 @@
-import React, { createContext, FC, useEffect, useState } from "react";
+import React, { FC, ReactNode, useEffect, useState } from "react";
 import { 
     AxiosInstance, 
     AxiosRequestConfig,
     AxiosResponse
 } from 'axios'
 
+import { IStatusCodeMessages, statusCodeMessages as statusCodeMessagesDefault } from "../../utils";
 
-export const loadingContext = createContext<any>({})
+import { 
+    networkContext,
+    componentsContext,
+    configContext,
+    IConfigContext,
+    removeParams,
+} from "../..";
+
+export interface IComponents {
+    alerts?: {
+        success: (title: string, message: string) => ReactNode,
+        danger: (title: string, message: string) => ReactNode,
+    },
+}
 
 export interface IFlawLessUIProps {
     axiosInstance: AxiosInstance,
@@ -14,6 +28,8 @@ export interface IFlawLessUIProps {
     onRequestError?: (error: any) => any,
     onResponseError?: (error: any) => any,
     onResponse?: (response: AxiosResponse<any, any>) => any,
+    components?: IComponents,
+    statusCodeMessages?: IStatusCodeMessages,
 }
 
 export const FlawLessUI: FC<IFlawLessUIProps> = ({
@@ -23,9 +39,16 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
     onRequestError,
     onResponseError,
     onResponse,
+    components,
+    statusCodeMessages,
 }) => {
 
-    const [loadingState, setLoadingState] = useState<any>({})
+    const [networkState, setNetworkState] = useState<any>({})
+    const [componentsState, setComponentsState] = useState<IComponents>({})
+    const [configState, setConfigState] = useState<IConfigContext>({
+        statusCodeMessages: statusCodeMessagesDefault,
+    })
+    
     const [effectCalled, setEffectCalled] = useState<boolean>(false)
 
     useEffect(() => {
@@ -33,19 +56,12 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
         const requestInterceptor =  axiosInstance.interceptors.request.use(
             config =>  {
 
-                const url: string = config.url as string
-                const index = url.indexOf('?')
+                const url: string = removeParams(config.url as string)
 
-                setLoadingState(
-                    (prev: any) => index !== -1 
-                        ? ({
-                            ...prev,
-                            [url.substring(0, url.indexOf('?'))]: true,
-                        })
-                        : ({
-                            ...prev,
-                            [url]: true,
-                        })
+                setNetworkState((prev: any) => ({
+                        ...prev,
+                        [url]: true,
+                    })
                 )
 
                 if (onConfig) onConfig(config)
@@ -61,19 +77,12 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
         const responseInterceptor = axiosInstance.interceptors.response.use(
             response => {
 
-                const url: string = response.config.url as string
-                const index = url.indexOf('?')
+                const url: string = removeParams(response.config.url as string)
 
-                setLoadingState(
-                    (prev: any) => index !== -1
-                        ? ({
-                            ...prev,
-                            [url.substring(0, url.indexOf('?'))]: false,
-                        })
-                        : ({
-                            ...prev,
-                            [url]: false,
-                        })
+                setNetworkState((prev: any) => ({
+                        ...prev,
+                        [url]: false,
+                    })
                 )
 
                 if (onResponse) onResponse(response)
@@ -82,21 +91,13 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
             },
             error => {
 
-                const url: string = error.config.url as string
+                const url: string = removeParams(error.config.url as string)
 
-                const index = url.indexOf('?')
-
-                if (index !== -1) {
-                    setLoadingState((prev: any) => ({
-                        ...prev,
-                        [url.substring(0, url.indexOf('?'))]: false,
-                    }))
-                } else {
-                    setLoadingState((prev: any) => ({
+                setNetworkState((prev: any) => ({
                         ...prev,
                         [url]: false,
-                    }))
-                }
+                    })
+                )
 
                 if (onResponseError) onResponseError(error)
 
@@ -111,13 +112,33 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
     }, [axiosInstance])
 
+    useEffect(() => {
+        if (typeof components !== 'undefined') setComponentsState(components)
+    }, [components])
+
+    useEffect(() => {
+        let config = {}
+
+        if (typeof statusCodeMessages !== 'undefined') config = {...config, statusCodeMessages}
+
+        setConfigState(prev => ({
+            ...prev,
+            ...config,
+        }))
+    }, [statusCodeMessages])
+
+
     return (
-        <loadingContext.Provider value={loadingState}>
-            {effectCalled && (
-                <>
-                    {children}
-                </>
-            )}
-        </loadingContext.Provider>
+        <networkContext.Provider value={networkState}>
+            <componentsContext.Provider value={componentsState}>
+                <configContext.Provider value={configState}>
+                    {effectCalled && (
+                        <>
+                            {children}
+                        </>
+                    )}
+                </configContext.Provider>
+            </componentsContext.Provider>
+        </networkContext.Provider>
     )
 }
