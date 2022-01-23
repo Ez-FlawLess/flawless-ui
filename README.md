@@ -85,17 +85,17 @@ const ExampleComponent = () => {
 ### ```<FlawLessUI />```
 
 props:
-- axiosInstance: an object of type AxiosInstance.
-- onConfig (optional): an event called when an HTTP request is being made with the config parameter of type AxiosRequestConfig.
-- onRequestError (optional): an event called when an HTTP request throws an error with the error parameter of type any.
-- onResponseError (optional): an event called when an HTTP response throws an error with the error parameter of type any.
-- onResponse (optional): an event called when an HTTP response has a success status code with the response parameter of type AxiosResponse.
+- ```axiosInstance```: an object of type AxiosInstance.
+- ```onConfig``` (optional): an event called when an HTTP request is being made with the config parameter of type AxiosRequestConfig.
+- ```onRequestError``` (optional): an event called when an HTTP request throws an error with the error parameter of type any.
+- ```onResponseError``` (optional): an event called when an HTTP response throws an error with the error parameter of type any.
+- ```onResponse``` (optional): an event called when an HTTP response has a success status code with the response parameter of type AxiosResponse.
 
 ### ```<LoadingController />```
 
 props:
-- children: a function with the loading boolean as parameter that should return JSX code.
-- url: a string that has been passed to the axios instance as path for HTTP request.
+- ```children```: a function with the loading boolean as parameter that should return JSX code.
+- ```url```: a string that has been passed to the axios instance as path for HTTP request.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
