@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { 
     AxiosInstance, 
     AxiosRequestConfig,
@@ -14,14 +14,8 @@ import {
     configContextDefault,
     IStatusCodeMessages,
     HttpMethod,
+    IComponents,
 } from "../..";
-
-export interface IComponents {
-    alerts?: {
-        success: ({title, message}: {title?: string, message: string}) => ReactNode,
-        danger: ({title, message}: {title?: string, message: string}) => ReactNode,
-    },
-}
 
 export interface IFlawLessUIProps {
     axiosInstance: AxiosInstance,
