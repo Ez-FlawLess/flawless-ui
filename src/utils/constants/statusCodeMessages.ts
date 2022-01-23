@@ -2,8 +2,15 @@ export interface IStatusCodeMessage {
     title: string,
     message: string,
 }
-
 export interface IStatusCodeMessages {
+    success?: {
+        title?: 'string',
+        message: 'string',
+    },
+    error?: {
+        title?: 'string',
+        message: (data: any) => string,
+    },
     1: {
         title?: string,
         message: string | {

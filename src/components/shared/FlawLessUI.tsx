@@ -5,20 +5,21 @@ import {
     AxiosResponse
 } from 'axios'
 
-import { IStatusCodeMessages, statusCodeMessages as statusCodeMessagesDefault } from "../../utils";
-
 import { 
     networkContext,
     componentsContext,
     configContext,
     IConfigContext,
     removeParams,
+    configContextDefault,
+    IStatusCodeMessages,
+    HttpMethod,
 } from "../..";
 
 export interface IComponents {
     alerts?: {
-        success: (title: string, message: string) => ReactNode,
-        danger: (title: string, message: string) => ReactNode,
+        success: ({title, message}: {title?: string, message: string}) => ReactNode,
+        danger: ({title, message}: {title?: string, message: string}) => ReactNode,
     },
 }
 
@@ -30,6 +31,7 @@ export interface IFlawLessUIProps {
     onResponse?: (response: AxiosResponse<any, any>) => any,
     components?: IComponents,
     statusCodeMessages?: IStatusCodeMessages,
+    feedbackMethods?: string[],
 }
 
 export const FlawLessUI: FC<IFlawLessUIProps> = ({
@@ -41,15 +43,15 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
     onResponse,
     components,
     statusCodeMessages,
+    feedbackMethods,
 }) => {
 
     const [networkState, setNetworkState] = useState<any>({})
     const [componentsState, setComponentsState] = useState<IComponents>({})
-    const [configState, setConfigState] = useState<IConfigContext>({
-        statusCodeMessages: statusCodeMessagesDefault,
-    })
+    const [configState, setConfigState] = useState<IConfigContext>(configContextDefault)
     
     const [effectCalled, setEffectCalled] = useState<boolean>(false)
+    const [callEffect, setCallEffect] = useState<boolean>(false)
 
     useEffect(() => {
         if (!effectCalled) setEffectCalled(true)
@@ -81,7 +83,13 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
                 setNetworkState((prev: any) => ({
                         ...prev,
-                        [url]: false,
+                        [url]: configState.feedbackMethods.includes(response.config.method as HttpMethod) 
+                            ? {
+                                success: true,
+                                statusCode: response.status,
+                                data: response.data,
+                            }
+                            : false,
                     })
                 )
 
@@ -95,7 +103,13 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
                 setNetworkState((prev: any) => ({
                         ...prev,
-                        [url]: false,
+                        [url]: configState.feedbackMethods.includes(error.config.method as HttpMethod) 
+                            ? {
+                                success: false,
+                                statusCode: error.response.status,
+                                data: error.response.data,
+                            }
+                            : false,
                     })
                 )
 
@@ -110,7 +124,7 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
             axiosInstance.interceptors.response.eject(responseInterceptor)
         }
 
-    }, [axiosInstance])
+    }, [axiosInstance, callEffect])
 
     useEffect(() => {
         if (typeof components !== 'undefined') setComponentsState(components)
@@ -121,11 +135,20 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
         if (typeof statusCodeMessages !== 'undefined') config = {...config, statusCodeMessages}
 
+        if (typeof feedbackMethods !== 'undefined') config = {...config, feedbackMethods}
+
         setConfigState(prev => ({
             ...prev,
             ...config,
         }))
-    }, [statusCodeMessages])
+        setEffectCalled(false)
+        setCallEffect(prev => !prev)
+    }, [
+        statusCodeMessages, 
+        feedbackMethods,
+    ])
+
+    console.log('config', configState)
 
 
     return (
