@@ -12,17 +12,17 @@ export const LoadingController: FC<ILoadingControllerProps> = ({
     url,
 }) => {
 
-    const networkState = useContext(networkContext)
+    const {network} = useContext(networkContext)
 
     const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
-        if(networkState[url] === true) {
+        if(network[url] === true) {
             setLoading(true)
         } else {
             setLoading(false)
         }
-    }, [networkState, url])
+    }, [network, url])
 
     return (
         <>

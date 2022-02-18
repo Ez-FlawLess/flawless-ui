@@ -1,9 +1,15 @@
 import { createContext, ReactNode } from "react";
 
+export interface IAlert {
+    title?: string,
+    message: string,
+    onClose?: () => any,
+}
+
 export interface IComponents {
     alerts?: {
-        success: ({title, message}: {title?: string, message: string}) => ReactNode,
-        danger: ({title, message}: {title?: string, message: string}) => ReactNode,
+        success: (params: IAlert) => ReactNode,
+        danger: (params: IAlert) => ReactNode,
     },
 }
 

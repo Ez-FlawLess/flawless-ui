@@ -12,7 +12,7 @@ export const HttpFeedback: FC<{
     url,
 }) => {
 
-    const networkState = useContext(networkContext)
+    const {network, setNetwork} = useContext(networkContext)
     const componentsState = useContext(componentsContext)
     const configState = useContext(configContext)
 
@@ -23,15 +23,15 @@ export const HttpFeedback: FC<{
     } | null>(null)
 
     useEffect(() => {
-        console.log(1, url,networkState[url]?.success, typeof networkState[url]?.success)
-        if (url && typeof networkState[url]?.success === 'boolean') {
+        console.log(1, url,network[url]?.success, typeof network[url]?.success)
+        if (url && typeof network[url]?.success === 'boolean') {
             console.log(2)
             const { statusCodeMessages }: any = configState
             const networkObject: {
                 success: boolean,
                 statusCode: number,
                 data: any,
-            } = networkState[url]
+            } = network[url]
             const statusCodeFirstDigit: 1 | 2 | 3 | 4 | 5 = parseInt(networkObject.statusCode.toString()[0]) as 1 | 2 | 3 | 4 | 5
 
             switch (networkObject.success) {
@@ -93,23 +93,30 @@ export const HttpFeedback: FC<{
         }
     }, [
         url,
-        networkState,
+        network,
         componentsState,
         configState,
     ])
+
+    const handleOnClose = (): any => {
+        setNetwork((prev: any) => ({
+            ...prev,
+            [url]: false,
+        }))
+    }
 
 
     console.log('feedback', response)
 
     if (response?.success === true) return (
         <>
-            {componentsState.alerts?.success({title: response.title, message: response.message})}
+            {componentsState.alerts?.success({title: response.title, message: response.message, onClose: handleOnClose})}
         </>
     )
 
     if (response?.success === false) return (
         <>
-            {componentsState.alerts?.danger({title: response.title, message: response.message})}
+            {componentsState.alerts?.danger({title: response.title, message: response.message, onClose: handleOnClose})}
         </>
     )
 

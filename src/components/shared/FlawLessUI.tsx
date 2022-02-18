@@ -146,7 +146,7 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
 
     return (
-        <networkContext.Provider value={networkState}>
+        <networkContext.Provider value={{network: networkState, setNetwork: p => setNetworkState(p)}}>
             <componentsContext.Provider value={componentsState}>
                 <configContext.Provider value={configState}>
                     {effectCalled && (
