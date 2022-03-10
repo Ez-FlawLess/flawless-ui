@@ -85,6 +85,55 @@ const ExampleComponent = () => {
 ```
 
 ## HTTP Feedback
+<<<<<<< HEAD
+=======
+
+First make sure you have created an axois instance and passed it to the ```<FlawLessUI />``` component. [Guide](https://www.npmjs.com/package/flawless-ui#usage)
+
+You can use any component you want to show your feedback. In order to do that you'll need to passing that component to component prop in ```<FlawLessUI />```. You can do this in a number of ways.
+
+```javascript
+import { FlawLessUI, IComponents, IAlert } from 'flawless-ui'
+import React, { FC } from 'react';
+import instance from './api'
+
+const Alert: FC<{type: 'success' | 'error'} & IAlert> = ({
+  title,
+  message,
+  type,
+  onClose,
+}) => {
+  return (
+    <div style={{background: type === 'success' ? 'green' : 'red'}}>
+      title {title} message {message}
+      <button onClick={onClose}>
+        close
+      </button>
+    </div>
+  )
+}
+
+const components: IComponents = {
+  alerts: {
+    success: (props: IAlert) => <Alert {...props} type='success' />,
+    danger: ({title, message, onClose}: {title?: string, message: string, onClose?: () => any}) => <Alert title={title} message={message} onClose={onClose} type='error' />,
+  }
+}
+
+ReactDOM.render(
+  <FlawLessUI 
+    axiosInstance={instance}
+    components={components}
+   >
+    <App />
+  </FlawLessUI>,
+  document.getElementById('root')
+)
+
+```
+
+After that you can use the ```<HttpFeedback />``` component to show the Alerts components for feedback.
+>>>>>>> 87dc8d695a76e21983e22aa46544a0de0a38d050
 
 First make sure you have created an axois instance and passed it to the ```<FlawLessUI />``` component. [Guide](https://www.npmjs.com/package/flawless-ui#usage)
 
