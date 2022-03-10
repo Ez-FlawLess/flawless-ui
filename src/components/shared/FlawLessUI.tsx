@@ -142,8 +142,6 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
         feedbackMethods,
     ])
 
-    console.log('config', configState)
-
 
     return (
         <networkContext.Provider value={{network: networkState, setNetwork: p => setNetworkState(p)}}>

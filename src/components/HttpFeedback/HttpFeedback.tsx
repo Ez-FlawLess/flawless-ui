@@ -23,9 +23,7 @@ export const HttpFeedback: FC<{
     } | null>(null)
 
     useEffect(() => {
-        console.log(1, url,network[url]?.success, typeof network[url]?.success)
         if (url && typeof network[url]?.success === 'boolean') {
-            console.log(2)
             const { statusCodeMessages }: any = configState
             const networkObject: {
                 success: boolean,
@@ -36,9 +34,7 @@ export const HttpFeedback: FC<{
 
             switch (networkObject.success) {
                 case true:
-                    console.log(3)
                     if (statusCodeMessages.success?.message) {
-                        console.log(4)
                         setResponse({
                             success: true,
                             title: statusCodeMessages.success?.title,
@@ -47,12 +43,9 @@ export const HttpFeedback: FC<{
                         break;
                     }
                 case false:
-                    console.log(5)
                     if (statusCodeMessages.error?.message) {
-                        console.log(6)
                         const message = statusCodeMessages.error?.message(networkObject.data)
                         if (message) {
-                            console.log(7)
                             setResponse({
                                 success: true,
                                 title: statusCodeMessages.error?.title,
@@ -62,30 +55,25 @@ export const HttpFeedback: FC<{
                         }
                     }
                 default:
-                    console.log(8)
                     if (typeof statusCodeMessages[statusCodeFirstDigit].message === 'string') {
-                        console.log(9)
                         setResponse({
                             success: networkObject.success,
                             title: statusCodeMessages[statusCodeFirstDigit].title,
                             message: statusCodeMessages[statusCodeFirstDigit].message,
                         })
                     } else if (typeof statusCodeMessages[statusCodeFirstDigit].message[networkObject.statusCode] === 'string') {
-                        console.log(10)
                         setResponse({
                             success: networkObject.success,
                             title: statusCodeMessages[statusCodeFirstDigit].title,
                             message: statusCodeMessages[statusCodeFirstDigit].message[networkObject.statusCode],
                         })
                     } else {
-                        console.log(11)
                         setResponse({
                             success: networkObject.success,
                             title: statusCodeMessages[statusCodeFirstDigit].message[networkObject.statusCode].message.title,
                             message: statusCodeMessages[statusCodeFirstDigit].message[networkObject.statusCode].message,
                         })
                     }
-                    console.log(12)
                     break;
             }
         } else {
@@ -104,9 +92,6 @@ export const HttpFeedback: FC<{
             [url]: false,
         }))
     }
-
-
-    console.log('feedback', response)
 
     if (response?.success === true) return (
         <>
