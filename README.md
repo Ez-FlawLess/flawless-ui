@@ -26,12 +26,12 @@ import axios from 'axios'
 
 const instance = axios.create({
   baseURL: 'https://some-domain.com/api/',
-)}
+})
 
 export default instance
 ```
 
-FlawLess UI includes ```<FlawLessUI />``` component, which handles loading state and provides it to the rest of the app.
+After that you can pass the axios instance to the ```<FlawLessUI />``` component and use the library features.
 
 ```javascript
 import { FlawLessUI } from 'flawless-ui'
@@ -42,10 +42,22 @@ ReactDOM.render(
     <App />
   </FlawLessUI>,
   document.getElementById('root')
-);
+)
 ```
 
-You can use ```<LoadingController />``` inside your app now to track loading state.
+## Features
+
+- [Loading][1]
+- [Http Feedback][2]
+
+[1]: https://www.npmjs.com/package/flawless-ui#loading
+[2]: https://www.npmjs.com/package/flawless-ui#http-Feedback
+
+## Loading
+
+First make sure you have created an axois instance and passed it to the ```<FlawLessUI />``` component. [Guide](https://www.npmjs.com/package/flawless-ui#usage)
+
+After that you can use ```<LoadingController />``` inside your app to track loading state.
 
 ```javascript
 import { LoadingController } from 'flawless-ui'
@@ -72,6 +84,53 @@ const ExampleComponent = () => {
 }
 ```
 
+## HTTP Feedback
+
+First make sure you have created an axois instance and passed it to the ```<FlawLessUI />``` component. [Guide](https://www.npmjs.com/package/flawless-ui#usage)
+
+You can use any component you want to show your feedback. In order to do that you'll need to passing that component to component prop in ```<FlawLessUI />```. You can do this in a number of ways.
+
+```javascript
+import { FlawLessUI, IComponents, IAlert } from 'flawless-ui'
+import React, { FC } from 'react';
+import instance from './api'
+
+const Alert: FC<{type: 'success' | 'error'} & IAlert> = ({
+  title,
+  message,
+  type,
+  onClose,
+}) => {
+  return (
+    <div style={{background: type === 'success' ? 'green' : 'red'}}>
+      title {title} message {message}
+      <button onClick={onClose}>
+        close
+      </button>
+    </div>
+  )
+}
+
+const components: IComponents = {
+  alerts: {
+    success: (props: IAlert) => <Alert {...props} type='success' />,
+    danger: ({title, message, onClose}: {title?: string, message: string, onClose?: () => any}) => <Alert title={title} message={message} onClose={onClose} type='error' />,
+  }
+}
+
+ReactDOM.render(
+  <FlawLessUI 
+    axiosInstance={instance}
+    components={components}
+   >
+    <App />
+  </FlawLessUI>,
+  document.getElementById('root')
+)
+
+```
+
+After that you can use the ```<HttpFeedback />``` component to show the Alerts components for feedback.
 
 ## Components
 
