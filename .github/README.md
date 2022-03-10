@@ -114,7 +114,7 @@ const Alert: FC<{type: 'success' | 'error'} & IAlert> = ({
 const components: IComponents = {
   alerts: {
     success: (props: IAlert) => <Alert {...props} type='success' />,
-    danger: ({title, message, onClose}: {title?: string, message: string, onClose?: () => any}) => <Alert title={title} message={message} onClose={onClose} type='error' />,
+    error: ({title, message, onClose}: {title?: string, message: string, onClose?: () => any}) => <Alert title={title} message={message} onClose={onClose} type='error' />,
   }
 }
 

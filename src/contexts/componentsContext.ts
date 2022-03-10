@@ -9,7 +9,7 @@ export interface IAlert {
 export interface IComponents {
     alerts?: {
         success: (params: IAlert) => ReactNode,
-        danger: (params: IAlert) => ReactNode,
+        error: (params: IAlert) => ReactNode,
     },
 }
 
