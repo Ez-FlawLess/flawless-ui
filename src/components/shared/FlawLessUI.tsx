@@ -41,6 +41,7 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 }) => {
 
     const [networkState, setNetworkState] = useState<any>({})
+    const [numberOfPendingRequests, setNumberOfPendingRequests] = useState<number>(0)
     const [componentsState, setComponentsState] = useState<IComponents>({})
     const [configState, setConfigState] = useState<IConfigContext>(configContextDefault)
     
@@ -62,6 +63,8 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
                 if (onConfig) onConfig(config)
                 
+                setNumberOfPendingRequests(prev => prev + 1)
+
                 return config
             },
             error => {
@@ -89,6 +92,8 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
                 if (onResponse) onResponse(response)
 
+                setNumberOfPendingRequests(prev => prev - 1)
+
                 return response
             },
             error => {
@@ -108,6 +113,8 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
                 )
 
                 if (onResponseError) onResponseError(error)
+
+                setNumberOfPendingRequests(prev => prev - 1)
 
                 throw error
             }
@@ -144,7 +151,7 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
 
 
     return (
-        <networkContext.Provider value={{network: networkState, setNetwork: p => setNetworkState(p)}}>
+        <networkContext.Provider value={{network: networkState, numberOfPendingRequests, setNetwork: p => setNetworkState(p)}}>
             <componentsContext.Provider value={componentsState}>
                 <configContext.Provider value={configState}>
                     {effectCalled && (

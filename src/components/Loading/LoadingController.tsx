@@ -4,25 +4,36 @@ import { networkContext } from "../..";
 
 export interface ILoadingControllerProps {
     children: (loading: boolean) => Element | Element[] | ReactNode | ReactNode[],
-    url: string,
 }
 
-export const LoadingController: FC<ILoadingControllerProps> = ({
+export const LoadingController: FC<ILoadingControllerProps & (
+    {url: string, all?: undefined} | {url?: undefined, all: true}
+)> = ({
     children,
     url,
+    all,
 }) => {
 
-    const {network} = useContext(networkContext)
+    const {network, numberOfPendingRequests} = useContext(networkContext)
 
     const [loading, setLoading] = useState<boolean>(false)
 
     useEffect(() => {
-        if(network[url] === true) {
-            setLoading(true)
-        } else {
-            setLoading(false)
+        if (url) {
+            if(network[url] === true) {
+                setLoading(true)
+            } else {
+                setLoading(false)
+            }
         }
     }, [network, url])
+
+    useEffect(() => {
+        if (all) {
+            if (numberOfPendingRequests) setLoading(true)
+            else setLoading(false)
+        }
+    }, [url, numberOfPendingRequests])
 
     return (
         <>
