@@ -84,6 +84,18 @@ const ExampleComponent = () => {
 }
 ```
 
+You can also use ```<LoadingController />``` to track the globall loading state of the app using the ```all``` prop instead of the ```url``` prop.
+
+```javascript
+<LoadingController all>
+  {loading => (
+    <h1>
+      {loading ? 'isLoading' : 'notLoading'}
+    </h1>
+  )}
+</LoadingController>
+```
+
 ## HTTP Feedback
 
 First make sure you have created an axois instance and passed it to the ```<FlawLessUI />``` component. [Guide](https://www.npmjs.com/package/flawless-ui#usage)
