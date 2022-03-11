@@ -6,10 +6,24 @@ import {
     configContext,
 } from '../..'
 
-export const HttpFeedback: FC<{
+export interface IHttpFeedback {
     url: string,
-}> = ({
+    onSuccess?: (data: any) => any,
+    onError?: (data: any) => any,
+    showSuccess?: boolean,
+    showError?: boolean,
+    message?: string,
+    title?: string,
+}
+
+export const HttpFeedback: FC<IHttpFeedback> = ({
     url,
+    onSuccess,
+    onError,
+    showError,
+    showSuccess,
+    message,
+    title,
 }) => {
 
     const {network, setNetwork} = useContext(networkContext)
@@ -34,6 +48,7 @@ export const HttpFeedback: FC<{
 
             switch (networkObject.success) {
                 case true:
+                    if (onSuccess) onSuccess(networkObject.data)
                     if (statusCodeMessages.success?.message) {
                         setResponse({
                             success: true,
@@ -43,6 +58,7 @@ export const HttpFeedback: FC<{
                         break;
                     }
                 case false:
+                    if (onError) onError(networkObject.data)
                     if (statusCodeMessages.error?.message) {
                         const message = statusCodeMessages.error?.message(networkObject.data)
                         if (message) {
@@ -93,17 +109,22 @@ export const HttpFeedback: FC<{
         }))
     }
 
-    if (response?.success === true) return (
+    if (showSuccess && response?.success === true) return (
         <>
-            {componentsState.alerts?.success({title: response.title, message: response.message, onClose: handleOnClose})}
+            {componentsState.alerts?.success({title: title || response.title, message: message || response.message, onClose: handleOnClose})}
         </>
     )
 
-    if (response?.success === false) return (
+    if (showError && response?.success === false) return (
         <>
             {componentsState.alerts?.error({title: response.title, message: response.message, onClose: handleOnClose})}
         </>
     )
 
     return null
+}
+
+HttpFeedback.defaultProps = {
+    showSuccess: true,
+    showError: true,
 }
