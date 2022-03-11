@@ -117,7 +117,7 @@ export const HttpFeedback: FC<IHttpFeedback> = ({
 
     if (showError && response?.success === false) return (
         <>
-            {componentsState.alerts?.error({title: response.title, message: response.message, onClose: handleOnClose})}
+            {componentsState.alerts?.error({title: title || response.title, message: message || response.message, onClose: handleOnClose})}
         </>
     )
 
