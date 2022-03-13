@@ -175,6 +175,63 @@ const feedbackMethods: HttpMethod[] = ['post', 'patch', 'put', 'delete']
 
 The title and message in ```<HttpFeedback />``` come from the IStatusCodeMessages object which has a static title and message for respond status codes. You can change these values by passing an object of type ```IStatusCodeMessages``` to ```statusCodeMessages``` prop on ```<FlawLessUI />```. you can also a function to ```error.message``` in ```statusCodeMessages``` which gets the http respond and passes it to the function as prop. If the function returns a value it would be shown to the user but if not it will show the message saved for the status code.
 
+You can also access the response from ```<HttpFeedback />``` using the ```onSuccess``` and  ```onError``` props. 
+
+```javascript
+const URL = '/api-path'
+
+const ExampleComponent = () => {
+  
+  const handleSuccess = (data: any) => {
+      // change route or ...
+  }
+  
+  const handleError = (data: any) => {
+      //...
+  }
+  
+  return (
+    <HttpFeedback
+      url={url}
+      onSuccess={handleSuccess}
+      onError={handleError}
+    />
+  )
+}
+```
+
+This helps you show a message based on the request itself using the ```message``` prop.
+
+```javascript
+import { useState } from 'react'
+
+const URL = '/api-path'
+
+const ExampleComponent = () => {
+
+  const [message, setMessage] = useState<string>('')
+  
+  const handleError = (data: any) => {
+      switch (data.error) {
+        case 'DataBase error':
+          setMessage('There was a problem on our side.')
+          break
+        default:
+          setMessage('')
+          break
+      }
+  }
+  
+  return (
+    <HttpFeedback
+      url={url}
+      onError={handleError}
+      message={message}
+    />
+  )
+}
+```
+
 <!-- ## Components
 
 - [```<FlawLessUI />```][1]
