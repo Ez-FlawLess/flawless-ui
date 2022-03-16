@@ -125,7 +125,7 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
             axiosInstance.interceptors.response.eject(responseInterceptor)
         }
 
-    }, [axiosInstance, callEffect])
+    }, [axiosInstance, callEffect, onConfig, onRequestError, onResponseError, onResponse])
 
     useEffect(() => {
         if (typeof components !== 'undefined') setComponentsState(components)
