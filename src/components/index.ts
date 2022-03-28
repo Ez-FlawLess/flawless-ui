@@ -1,3 +1,5 @@
 export * from './shared'
 export * from './Loading'
 export * from './HttpFeedback'
+export * from './Form'
+export * from './Inputs'

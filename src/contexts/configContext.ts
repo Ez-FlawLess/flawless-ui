@@ -3,7 +3,7 @@ import { createContext } from "react";
 import { 
     IStatusCodeMessages, 
     statusCodeMessages, 
-} from "..";
+} from "../utils";
 
 export type HttpMethod = 'get' | 'head' | 'post' | 'put' | 'delete' | 'connect' | 'options' | 'trace' | 'patch'
 

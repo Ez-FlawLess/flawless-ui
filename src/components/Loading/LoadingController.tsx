@@ -26,7 +26,7 @@ export const LoadingController: FC<ILoadingControllerProps & (
                 setLoading(false)
             }
         }
-    }, [network, url])
+    }, [network[url ? url : ' '], url])
 
     useEffect(() => {
         if (all) {

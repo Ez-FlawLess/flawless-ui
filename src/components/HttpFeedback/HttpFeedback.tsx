@@ -96,59 +96,12 @@ export const HttpFeedback: FC<IHttpFeedback> = ({
                     handleRequest()
                 }
             }
-
-            // switch (networkObject.success) {
-            //     case true:
-            //         if (onSuccess) onSuccess(networkObject.data)
-            //         if (statusCodeMessages.success?.message) {
-            //             setResponse({
-            //                 success: true,
-            //                 title: statusCodeMessages.success?.title,
-            //                 message: statusCodeMessages.success?.message,
-            //             })
-            //             break;
-            //         }
-            //     case false:
-            //         if (onError) onError(networkObject.data)
-            //         if (statusCodeMessages.error?.message) {
-            //             const message = statusCodeMessages.error?.message(networkObject.data)
-            //             if (message) {
-            //                 setResponse({
-            //                     success: true,
-            //                     title: statusCodeMessages.error?.title,
-            //                     message: message,
-            //                 })
-            //                 break
-            //             }
-            //         }
-            //     default:
-            //         if (typeof statusCodeMessages[statusCodeFirstDigit].message === 'string') {
-            //             setResponse({
-            //                 success: networkObject.success,
-            //                 title: statusCodeMessages[statusCodeFirstDigit].title,
-            //                 message: statusCodeMessages[statusCodeFirstDigit].message,
-            //             })
-            //         } else if (typeof statusCodeMessages[statusCodeFirstDigit].message[networkObject.statusCode] === 'string') {
-            //             setResponse({
-            //                 success: networkObject.success,
-            //                 title: statusCodeMessages[statusCodeFirstDigit].title,
-            //                 message: statusCodeMessages[statusCodeFirstDigit].message[networkObject.statusCode],
-            //             })
-            //         } else {
-            //             setResponse({
-            //                 success: networkObject.success,
-            //                 title: statusCodeMessages[statusCodeFirstDigit].message[networkObject.statusCode].message.title,
-            //                 message: statusCodeMessages[statusCodeFirstDigit].message[networkObject.statusCode].message,
-            //             })
-            //         }
-            //         break;
-            // }
         } else {
             setResponse(null)
         }
     }, [
         url,
-        network,
+        network[url],
         componentsState,
         configState,
     ])
