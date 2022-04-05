@@ -19,7 +19,7 @@ import {
 
 export interface IFlawLessUIProps {
     axiosInstance: AxiosInstance,
-    onConfig?: (config: AxiosRequestConfig<any>) => any,
+    onConfig?: (config: AxiosRequestConfig<any>) => void | AxiosRequestConfig<any>,
     onRequestError?: (error: any) => any,
     onResponseError?: (error: any) => any,
     onResponse?: (response: AxiosResponse<any, any>) => any,
@@ -61,7 +61,10 @@ export const FlawLessUI: FC<IFlawLessUIProps> = ({
                     })
                 )
 
-                if (onConfig) onConfig(config)
+                if (onConfig) {
+                    const newConfig = onConfig(config)
+                    if (newConfig) config = newConfig
+                }
                 
                 setNumberOfPendingRequests(prev => prev + 1)
 
