@@ -1,9 +1,9 @@
 import { createContext, ReactNode, useContext } from "react";
 
 export interface IAlert {
-    title?: string,
+    title: string,
     message: string,
-    onClose?: () => any,
+    onClose: () => any,
 }
 
 export interface ITextInputProps {
